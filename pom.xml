@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.starlangsoftware</groupId>
-    <artifactId>WordSenseDisambiguation</artifactId>
+    <artifactId>SemanticRoleLabeling</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
