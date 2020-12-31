@@ -23,13 +23,13 @@ public class SentencePropbankArgumentFrame extends SentenceAnnotatorFrame {
 
     @Override
     protected SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
-        return new DataCollector.Sentence.Propbank.SentencePropbankArgumentPanel(currentPath, rawFileName, wordNet, xmlParser);
+        return new SentencePropbankArgumentPanel(currentPath, rawFileName, wordNet, xmlParser);
     }
 
     public void next(int count){
         super.next(count);
-        DataCollector.Sentence.Propbank.SentencePropbankArgumentPanel current;
-        current = (DataCollector.Sentence.Propbank.SentencePropbankArgumentPanel) ((JScrollPane) projectPane.getSelectedComponent()).getViewport().getView();
+        SentencePropbankArgumentPanel current;
+        current = (SentencePropbankArgumentPanel) ((JScrollPane) projectPane.getSelectedComponent()).getViewport().getView();
         if (autoArgumentDetectionOption.isSelected() && current.sentence.containsPredicate()){
             current.autoDetect();
         }
