@@ -2,8 +2,8 @@ package Annotation.Sentence.Propbank;
 
 import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
-import AnnotatedSentence.AutoProcessor.AutoPredicate.TurkishSentenceAutoPredicate;
 import AnnotatedSentence.ViewLayerType;
+import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoPredicate;
 import DataCollector.Sentence.SentenceAnnotatorPanel;
 import Dictionary.Pos;
 import PropBank.Argument;

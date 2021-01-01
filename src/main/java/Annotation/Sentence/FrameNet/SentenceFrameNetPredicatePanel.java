@@ -2,8 +2,8 @@ package Annotation.Sentence.FrameNet;
 
 import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
-import AnnotatedSentence.AutoProcessor.AutoPredicate.TurkishSentenceAutoFramePredicate;
 import AnnotatedSentence.ViewLayerType;
+import AutoProcessor.Sentence.FrameNet.TurkishSentenceAutoFramePredicate;
 import DataCollector.Sentence.SentenceAnnotatorPanel;
 import Dictionary.Pos;
 import FrameNet.FrameElement;
