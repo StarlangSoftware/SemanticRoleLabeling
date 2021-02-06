@@ -35,7 +35,7 @@ Use Git for cloning the code to your local or below line for Ubuntu:
 
 	git clone <your-fork-git-link>
 
-A directory called Classification will be created. Or you can use below link for exploring the code:
+A directory called SemanticRoleLabeling will be created. Or you can use below link for exploring the code:
 
 	git clone https://github.com/olcaytaner/SemanticRoleLabeling.git
 
