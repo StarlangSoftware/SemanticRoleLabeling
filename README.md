@@ -110,3 +110,17 @@ Use below line to generate jar file:
             <artifactId>SemanticRoleLabeling</artifactId>
             <version>1.0.1</version>
         </dependency>
+
+Detailed Description
+============
+
+The first task in Semantic Role Labeling is detecting predicates. In order to detect the predicates of the sentence, we use autoPredicate method of the TurkishSentenceAutoPredicate class.
+
+	AnnotatedSentence sentence = ...
+	TurkishSentenceAutoPredicate turkishAutoPredicate = new TurkishSentenceAutoPredicate(new FramesetList());
+	turkishAutoPredicate.autoPredicate(sentence);
+	
+Afterwards, one has to annotate the arguments for each predicate. We use autoArgument method of the TurkishSentenceAutoArgument class for that purpose.
+
+	TurkishSentenceAutoArgument turkishAutoArgument;
+	turkishAutoArgument.autoArgument(sentence);
