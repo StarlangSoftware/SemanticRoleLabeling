@@ -38,14 +38,18 @@ The following Table shows typical semantic role types. Only Arg0 and Arg1 indica
 3. Put the sentences in the same folder such as *Turkish-Phrase*.
 4. Build the project and put the generated sentence-propbank-predicate.jar and sentence-propbank-argument.jar files into another folder such as *Program*.
 5. Put *Turkish-Phrase* and *Program* folders into a parent folder.
+![Main Folder](folder.png)
 
 ### Predicate Annotation
 
 1. Open sentence-propbank-predicate.jar file.
 2. Wait until the data load message is displayed.
 3. Click Open button in the Project menu.
-4. Choose a file for annotation from the folder *Turkish-Phrase*.
+![Open File](open.png)
+4. Choose a file for annotation from the folder *Turkish-Phrase*.  
+![Choose File](choosefile.png)
 5. For each predicate word in the sentence, click the word, and choose PREDICATE tag for that word.
+![Predicate Annotation](predicate.png)
 6. Click one of the next buttons to go to other files.
 
 ### Argument Annotation
@@ -53,8 +57,11 @@ The following Table shows typical semantic role types. Only Arg0 and Arg1 indica
 1. Open sentence-propbank-argument.jar file.
 2. Wait until the data load message is displayed.
 3. Click Open button in the Project menu.
-4. Choose a file for annotation from the folder *Turkish-Phrase*.
+![Open File](open.png)
+4. Choose a file for annotation from the folder *Turkish-Phrase*.  
+![Choose File](choosefile.png)
 5. For each word in the sentence, click the word, and choose correct argument tag for that word.
+![Argument Annotation](argument.png)
 6. Click one of the next buttons to go to other files.
 
 For Developers
