@@ -64,6 +64,14 @@ The following Table shows typical semantic role types. Only Arg0 and Arg1 indica
 ![Argument Annotation](argument.png)
 6. Click one of the next buttons to go to other files.
 
+## Classification DataSet Generation
+
+After annotating sentences, you can use [DataGenerator](https://github.com/starlangsoftware/DataGenerator) package to generate classification dataset for the Semantic Role Labeling task.
+
+## Generation of ML Models
+
+After generating the classification dataset as above, one can use the [Classification](https://github.com/starlangsoftware/Classification) package to generate machine learning models for the Semantic Role Labeling task.
+
 For Developers
 ============
 
