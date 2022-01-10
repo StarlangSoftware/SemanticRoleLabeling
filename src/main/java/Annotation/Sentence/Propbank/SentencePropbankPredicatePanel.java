@@ -11,6 +11,7 @@ import PropBank.FramesetList;
 import WordNet.WordNet;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class SentencePropbankPredicatePanel extends SentenceAnnotatorPanel {
     private TurkishSentenceAutoPredicate turkishSentenceAutoPredicate;
@@ -21,6 +22,36 @@ public class SentencePropbankPredicatePanel extends SentenceAnnotatorPanel {
         setLayout(new BorderLayout());
         this.wordNet = wordNet;
         turkishSentenceAutoPredicate = new TurkishSentenceAutoPredicate(xmlParser);
+    }
+
+    @Override
+    protected void setWordLayer() {
+        clickedWord.setArgument(list.getSelectedValue().toString());
+    }
+
+    @Override
+    protected void setBounds() {
+        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().x, ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().y + 20, 240, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
+    }
+
+    @Override
+    protected void drawLayer(AnnotatedWord word, Graphics g, int currentLeft, int lineIndex, int wordIndex, int maxSize, ArrayList<Integer> wordSize, ArrayList<Integer> wordTotal) {
+        if (word.getArgument() != null){
+            String correct = word.getArgument().getArgumentType();
+            g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
+        }
+    }
+
+    @Override
+    protected int getMaxLayerLength(AnnotatedWord word, Graphics g) {
+        int maxSize = g.getFontMetrics().stringWidth(word.getName());
+        if (word.getArgument() != null){
+            int size = g.getFontMetrics().stringWidth(word.getArgument().getArgumentType());
+            if (size > maxSize){
+                maxSize = size;
+            }
+        }
+        return maxSize;
     }
 
     public void autoDetect(){

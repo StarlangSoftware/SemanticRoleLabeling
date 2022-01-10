@@ -19,6 +19,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
@@ -65,6 +66,36 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
         pane.setFocusTraversalKeysEnabled(false);
         pane.setVisible(false);
         setFocusable(false);
+    }
+
+    @Override
+    protected void setWordLayer() {
+        clickedWord.setArgument(list.getSelectedValue().toString());
+    }
+
+    @Override
+    protected void setBounds() {
+        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().x, ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().y + 20, 240, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
+    }
+
+    @Override
+    protected void drawLayer(AnnotatedWord word, Graphics g, int currentLeft, int lineIndex, int wordIndex, int maxSize, ArrayList<Integer> wordSize, ArrayList<Integer> wordTotal) {
+        if (word.getArgument() != null){
+            String correct = word.getArgument().getArgumentType();
+            g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
+        }
+    }
+
+    @Override
+    protected int getMaxLayerLength(AnnotatedWord word, Graphics g) {
+        int maxSize = g.getFontMetrics().stringWidth(word.getName());
+        if (word.getArgument() != null){
+            int size = g.getFontMetrics().stringWidth(word.getArgument().getArgumentType());
+            if (size > maxSize){
+                maxSize = size;
+            }
+        }
+        return maxSize;
     }
 
     public void autoDetect(){
