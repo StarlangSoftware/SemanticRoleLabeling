@@ -4,7 +4,7 @@ import AnnotatedSentence.AnnotatedSentence;
 import FrameNet.FrameNet;
 
 public abstract class SentenceAutoFramePredicate {
-    private FrameNet frameNet;
+    protected FrameNet frameNet;
 
     /**
      * The method should set determine all frame predicates in the sentence.

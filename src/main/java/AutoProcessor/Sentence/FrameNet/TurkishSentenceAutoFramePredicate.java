@@ -7,7 +7,6 @@ import FrameNet.FrameNet;
 import java.util.ArrayList;
 
 public class TurkishSentenceAutoFramePredicate extends SentenceAutoFramePredicate {
-    private FrameNet frameNet;
 
     /**
      * Constructor for {@link TurkishSentenceAutoFramePredicate}. Gets the FrameSets as input from the user, and sets
