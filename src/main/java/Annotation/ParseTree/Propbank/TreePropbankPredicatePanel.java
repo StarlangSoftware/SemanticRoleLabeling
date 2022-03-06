@@ -9,6 +9,7 @@ import PropBank.Argument;
 import WordNet.WordNet;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class TreePropbankPredicatePanel extends TreeLeafEditorPanel {
     private WordNet wordNet;
@@ -76,6 +77,41 @@ public class TreePropbankPredicatePanel extends TreeLeafEditorPanel {
         pane.setBounds(node.getArea().x - 5, node.getArea().y + 30, 200, 90);
         this.repaint();
         isEditing = true;
+    }
+
+    protected int getStringSize(ParseNodeDrawable parseNode, Graphics g) {
+        if (parseNode.numberOfChildren() == 0) {
+            if (parseNode.getLayerInfo().getArgument() != null){
+                return g.getFontMetrics().stringWidth(parseNode.getLayerInfo().getArgument().getArgumentType());
+            } else {
+                return g.getFontMetrics().stringWidth(parseNode.getData().getName());
+            }
+        } else {
+            return g.getFontMetrics().stringWidth(parseNode.getData().getName());
+        }
+    }
+
+    protected void drawString(ParseNodeDrawable parseNode, Graphics g, int x, int y){
+        if (parseNode.numberOfChildren() == 0){
+            g.drawString(parseNode.getLayerData(ViewLayerType.TURKISH_WORD), x, y);
+            g.setColor(Color.RED);
+            y += 25;
+            if (parseNode.getLayerInfo().getArgument() != null){
+                g.drawString(parseNode.getLayerInfo().getArgument().getArgumentType(), x, y);
+                if (parseNode.getLayerInfo().getArgument().getId() != null){
+                    Font previousFont = g.getFont();
+                    g.setFont(new Font("Serif", Font.PLAIN, 10));
+                    g.drawString(parseNode.getLayerInfo().getArgument().getId(), x - 15, y + 10);
+                    g.setFont(previousFont);
+                }
+            }
+        } else {
+            g.drawString(parseNode.getData().getName(), x, y);
+        }
+    }
+
+    protected void setArea(ParseNodeDrawable parseNode, int x, int y, int stringSize){
+        parseNode.setArea(x - 5, y - 15, stringSize + 10, 20);
     }
 
 }
