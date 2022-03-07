@@ -71,7 +71,7 @@ public class SentenceFrameNetElementPanel extends SentenceAnnotatorPanel {
 
     @Override
     protected void setBounds() {
-        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().x, ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().y + ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().height, 120, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
+        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getHeight(), 120, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
     }
 
     @Override
@@ -148,7 +148,7 @@ public class SentenceFrameNetElementPanel extends SentenceAnnotatorPanel {
         if (selectedWordIndex != -1){
             populateLeaf(sentence, selectedWordIndex);
             pane.getVerticalScrollBar().setValue(0);
-            pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().x, ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().y + 20, 240, 200);
+            pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + 20, 240, 200);
             clickedWord = ((AnnotatedWord)sentence.getWord(selectedWordIndex));
             selectedWordIndex = -1;
             selfSelected = false;

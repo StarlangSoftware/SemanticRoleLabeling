@@ -107,7 +107,7 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
         tree.setVisible(true);
         pane.setVisible(true);
         pane.getVerticalScrollBar().setValue(0);
-        pane.setBounds(node.getArea().x - 5, node.getArea().y + 30, 250, 200);
+        pane.setBounds(node.getArea().getX() - 5, node.getArea().getY() + 30, 250, 200);
         this.repaint();
         isEditing = true;
     }
