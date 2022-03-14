@@ -2,8 +2,6 @@ package Annotation.ParseTree.Propbank;
 
 import AnnotatedSentence.ViewLayerType;
 import AnnotatedTree.*;
-import AnnotatedTree.Processor.Condition.IsTurkishLeafNode;
-import AnnotatedTree.Processor.NodeDrawableCollector;
 import DataCollector.ParseTree.TreeAction.LayerAction;
 import DataCollector.ParseTree.TreeLeafEditorPanel;
 import PropBank.Argument;
@@ -17,12 +15,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
 
-    private FramesetList xmlParser;
+    private FramesetList framesetList;
     private WordNet wordNet;
     private JTree tree;
     private DefaultTreeModel treeModel;
@@ -30,7 +27,7 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
     public TreePropbankArgumentPanel(String path, String fileName, WordNet wordNet) {
         super(path, fileName, ViewLayerType.PROPBANK, false);
         this.wordNet = wordNet;
-        xmlParser = new FramesetList();
+        framesetList = new FramesetList();
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("FrameSets");
         treeModel = new DefaultTreeModel(rootNode);
         tree = new JTree(treeModel);
@@ -63,29 +60,13 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
         addMouseMotionListener(this);
     }
 
-    private HashSet<Frameset> getPredicateSynSets(){
-        HashSet<Frameset> synSets = new HashSet<>();
-        NodeDrawableCollector nodeDrawableCollector = new NodeDrawableCollector((ParseNodeDrawable) currentTree.getRoot(), new IsTurkishLeafNode());
-        ArrayList<ParseNodeDrawable> leafList = nodeDrawableCollector.collect();
-        for (ParseNodeDrawable leafNode : leafList){
-            Argument argument = leafNode.getLayerInfo().getArgument();
-            if (argument != null && argument.getArgumentType().equals("PREDICATE")){
-                SynSet synSet = wordNet.getSynSetWithId(leafNode.getLayerInfo().getArgument().getId());
-                if (synSet != null && xmlParser.frameExists(synSet.getId())){
-                    synSets.add(xmlParser.getFrameSet(synSet.getId()));
-                }
-            }
-        }
-        return synSets;
-    }
-
     public void populateLeaf(ParseNodeDrawable node){
         DefaultMutableTreeNode selectedNode = null;
         if (previousNode != null){
             previousNode.setSelected(false);
         }
         previousNode = node;
-        HashSet<Frameset> frameSets = getPredicateSynSets();
+        HashSet<Frameset> frameSets = currentTree.getPredicateSynSets(wordNet, framesetList);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();
         for (Frameset frameset : frameSets){

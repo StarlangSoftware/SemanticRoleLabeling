@@ -4,9 +4,8 @@ import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
 import AnnotatedSentence.ViewLayerType;
 import DataCollector.Sentence.SentenceAnnotatorPanel;
-import FrameNet.Frame;
 import FrameNet.FrameNet;
-import WordNet.SynSet;
+import FrameNet.DisplayedFrame;
 import WordNet.WordNet;
 
 import javax.swing.*;
@@ -99,26 +98,9 @@ public class SentenceFrameNetElementPanel extends SentenceAnnotatorPanel {
         return maxSize;
     }
 
-    private void getFrames(AnnotatedSentence sentence){
-        currentFrames = new ArrayList<>();
-        for (int i = 0; i < sentence.wordCount(); i++){
-            AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
-            if (word.getFrameElement() != null && word.getFrameElement().getFrameElementType().equals("PREDICATE") && word.getSemantic() != null){
-                SynSet synSet = wordNet.getSynSetWithId(word.getSemantic());
-                if (synSet != null && frameNet.lexicalUnitExists(synSet.getId())){
-                    for (Frame frame : frameNet.getFrames(synSet.getId())){
-                        if (!currentFrames.contains(new DisplayedFrame(frame, synSet.getId()))){
-                            currentFrames.add(new DisplayedFrame(frame, synSet.getId()));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         DefaultMutableTreeNode selectedNode = null;
-        getFrames(sentence);
+        currentFrames = sentence.getFrames(wordNet, frameNet);
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();

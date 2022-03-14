@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
-    private FramesetList xmlParser;
+    private FramesetList framesetList;
     private WordNet wordNet;
     private JTree tree;
     private DefaultTreeModel treeModel;
@@ -31,11 +31,11 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
     private HashSet<Frameset> currentFrameSets;
     private TurkishSentenceAutoArgument turkishSentenceAutoArgument;
 
-    public SentencePropbankArgumentPanel(String currentPath, String fileName, WordNet wordNet, FramesetList xmlParser){
+    public SentencePropbankArgumentPanel(String currentPath, String fileName, WordNet wordNet, FramesetList framesetList){
         super(currentPath, fileName, ViewLayerType.PROPBANK);
         this.wordNet = wordNet;
         setLayout(new BorderLayout());
-        this.xmlParser = xmlParser;
+        this.framesetList = framesetList;
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("FrameSets");
         turkishSentenceAutoArgument = new TurkishSentenceAutoArgument();
         treeModel = new DefaultTreeModel(rootNode);
@@ -110,24 +110,10 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
         }
     }
 
-    private HashSet<Frameset> getPredicateSynSets(AnnotatedSentence sentence){
-        HashSet<Frameset> synSets = new HashSet<>();
-        for (int i = 0; i < sentence.wordCount(); i++){
-            AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
-            if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE") && word.getSemantic() != null){
-                SynSet synSet = wordNet.getSynSetWithId(word.getSemantic());
-                if (synSet != null && xmlParser.frameExists(synSet.getId())){
-                    synSets.add(xmlParser.getFrameSet(synSet.getId()));
-                }
-            }
-        }
-        return synSets;
-    }
-
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         boolean argTmp, argLoc, argDis, argMnr;
         DefaultMutableTreeNode selectedNode = null;
-        currentFrameSets = getPredicateSynSets(sentence);
+        currentFrameSets = sentence.getPredicateSynSets(wordNet, framesetList);
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();
