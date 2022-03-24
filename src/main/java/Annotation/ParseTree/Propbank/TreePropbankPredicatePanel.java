@@ -4,21 +4,17 @@ import AnnotatedSentence.ViewLayerType;
 import AnnotatedTree.ParseNodeDrawable;
 import DataCollector.ParseTree.TreeAction.LayerAction;
 import DataCollector.ParseTree.TreeLeafEditorPanel;
-import Dictionary.Pos;
 import PropBank.Argument;
-import WordNet.WordNet;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class TreePropbankPredicatePanel extends TreeLeafEditorPanel {
-    private WordNet wordNet;
     private JList list;
     private DefaultListModel listModel;
 
-    public TreePropbankPredicatePanel(String path, String fileName, WordNet wordNet) {
+    public TreePropbankPredicatePanel(String path, String fileName) {
         super(path, fileName, ViewLayerType.PROPBANK, false);
-        this.wordNet = wordNet;
         listModel = new DefaultListModel();
         list = new JList(listModel);
         list.setVisible(false);
@@ -55,7 +51,7 @@ public class TreePropbankPredicatePanel extends TreeLeafEditorPanel {
         listModel.addElement(new Argument("NONE", null));
         if (node.getLayerData(ViewLayerType.SEMANTICS) != null){
             String semantics = node.getLayerData(ViewLayerType.SEMANTICS);
-            if (node.getLayerInfo().getNumberOfMeanings() == 1 && wordNet.getSynSetWithId(semantics) != null && wordNet.getSynSetWithId(semantics).getPos().equals(Pos.VERB)){
+            if (node.getLayerInfo().getNumberOfMeanings() == 1){
                 listModel.addElement(new Argument("PREDICATE", semantics));
                 if (node.getLayerInfo().getArgument() != null){
                     if (node.getLayerInfo().getArgument().getArgumentType().equals("PREDICATE") && node.getLayerInfo().getArgument().getId().equals(semantics)){

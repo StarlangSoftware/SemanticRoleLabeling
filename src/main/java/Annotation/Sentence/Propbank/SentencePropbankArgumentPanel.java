@@ -8,8 +8,6 @@ import DataCollector.Sentence.SentenceAnnotatorPanel;
 import PropBank.Frameset;
 import PropBank.FramesetArgument;
 import PropBank.FramesetList;
-import WordNet.SynSet;
-import WordNet.WordNet;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -24,16 +22,14 @@ import java.util.HashSet;
 
 public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
     private FramesetList framesetList;
-    private WordNet wordNet;
     private JTree tree;
     private DefaultTreeModel treeModel;
     private boolean selfSelected = false;
     private HashSet<Frameset> currentFrameSets;
     private TurkishSentenceAutoArgument turkishSentenceAutoArgument;
 
-    public SentencePropbankArgumentPanel(String currentPath, String fileName, WordNet wordNet, FramesetList framesetList){
+    public SentencePropbankArgumentPanel(String currentPath, String fileName, FramesetList framesetList){
         super(currentPath, fileName, ViewLayerType.PROPBANK);
-        this.wordNet = wordNet;
         setLayout(new BorderLayout());
         this.framesetList = framesetList;
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("FrameSets");
@@ -46,9 +42,9 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (node != null && clickedWord != null && !selfSelected) {
                 if (node.getLevel() == 2){
-                    SynSet synSet = (SynSet) ((DefaultMutableTreeNode)node.getParent()).getUserObject();
+                    String synSet = (String) ((DefaultMutableTreeNode)node.getParent()).getUserObject();
                     FramesetArgument argument = (FramesetArgument) node.getUserObject();
-                    clickedWord.setArgument(argument.getArgumentType() + "$" + synSet.getId());
+                    clickedWord.setArgument(argument.getArgumentType() + "$" + synSet);
                     sentence.writeToFile(new File(fileDescription.getFileName()));
                 } else {
                     if (node.getLevel() == 0){
@@ -113,12 +109,12 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         boolean argTmp, argLoc, argDis, argMnr;
         DefaultMutableTreeNode selectedNode = null;
-        currentFrameSets = sentence.getPredicateSynSets(wordNet, framesetList);
+        currentFrameSets = sentence.getPredicateSynSets(framesetList);
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();
         for (Frameset frameset : currentFrameSets){
-            DefaultMutableTreeNode frameNode = new DefaultMutableTreeNode(wordNet.getSynSetWithId(frameset.getId()));
+            DefaultMutableTreeNode frameNode = new DefaultMutableTreeNode(frameset.getId());
             ((DefaultMutableTreeNode) treeModel.getRoot()).add(frameNode);
             argTmp = false;
             argDis = false;

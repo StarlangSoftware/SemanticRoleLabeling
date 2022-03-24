@@ -20,13 +20,11 @@ import java.util.HashSet;
 public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
 
     private FramesetList framesetList;
-    private WordNet wordNet;
     private JTree tree;
     private DefaultTreeModel treeModel;
 
-    public TreePropbankArgumentPanel(String path, String fileName, WordNet wordNet) {
+    public TreePropbankArgumentPanel(String path, String fileName) {
         super(path, fileName, ViewLayerType.PROPBANK, false);
-        this.wordNet = wordNet;
         framesetList = new FramesetList();
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("FrameSets");
         treeModel = new DefaultTreeModel(rootNode);
@@ -38,9 +36,9 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
                 LayerAction action;
                 previousNode.setSelected(false);
                 if (treeNode.getLevel() == 2){
-                    SynSet predicateSynSet = (SynSet)((DefaultMutableTreeNode)treeNode.getParent()).getUserObject();
+                    String predicateSynSet = (String)((DefaultMutableTreeNode)treeNode.getParent()).getUserObject();
                     FramesetArgument argument = (FramesetArgument) treeNode.getUserObject();
-                    action = new LayerAction(((TreePropbankArgumentPanel)((JTree) e.getSource()).getParent().getParent().getParent()), previousNode.getLayerInfo(), argument.getArgumentType() + "$" + predicateSynSet.getId(), ViewLayerType.PROPBANK);
+                    action = new LayerAction(((TreePropbankArgumentPanel)((JTree) e.getSource()).getParent().getParent().getParent()), previousNode.getLayerInfo(), argument.getArgumentType() + "$" + predicateSynSet, ViewLayerType.PROPBANK);
                 } else {
                     action = new LayerAction(((TreePropbankArgumentPanel)((JTree) e.getSource()).getParent().getParent().getParent()), previousNode.getLayerInfo(), "NONE", ViewLayerType.PROPBANK);
                 }
@@ -66,11 +64,11 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
             previousNode.setSelected(false);
         }
         previousNode = node;
-        HashSet<Frameset> frameSets = currentTree.getPredicateSynSets(wordNet, framesetList);
+        HashSet<Frameset> frameSets = currentTree.getPredicateSynSets(framesetList);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();
         for (Frameset frameset : frameSets){
-            DefaultMutableTreeNode frameNode = new DefaultMutableTreeNode(wordNet.getSynSetWithId(frameset.getId()));
+            DefaultMutableTreeNode frameNode = new DefaultMutableTreeNode(frameset.getId());
             ((DefaultMutableTreeNode) treeModel.getRoot()).add(frameNode);
             for (FramesetArgument framesetArgument : frameset.getFramesetArguments()){
                 DefaultMutableTreeNode argumentNode = new DefaultMutableTreeNode(framesetArgument);

@@ -6,7 +6,6 @@ import AnnotatedSentence.ViewLayerType;
 import DataCollector.Sentence.SentenceAnnotatorPanel;
 import FrameNet.FrameNet;
 import FrameNet.DisplayedFrame;
-import WordNet.WordNet;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,15 +20,13 @@ import java.util.ArrayList;
 public class SentenceFrameNetElementPanel extends SentenceAnnotatorPanel {
 
     private FrameNet frameNet;
-    private WordNet wordNet;
     private JTree tree;
     private DefaultTreeModel treeModel;
     private ArrayList<DisplayedFrame> currentFrames;
     private boolean selfSelected = false;
 
-    public SentenceFrameNetElementPanel(String currentPath, String fileName, WordNet wordNet, FrameNet frameNet){
+    public SentenceFrameNetElementPanel(String currentPath, String fileName, FrameNet frameNet){
         super(currentPath, fileName, ViewLayerType.FRAMENET);
-        this.wordNet = wordNet;
         setLayout(new BorderLayout());
         this.frameNet = frameNet;
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Frames");
@@ -100,7 +97,7 @@ public class SentenceFrameNetElementPanel extends SentenceAnnotatorPanel {
 
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         DefaultMutableTreeNode selectedNode = null;
-        currentFrames = sentence.getFrames(wordNet, frameNet);
+        currentFrames = sentence.getFrames(frameNet);
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();

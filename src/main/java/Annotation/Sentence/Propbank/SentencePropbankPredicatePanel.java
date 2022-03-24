@@ -5,22 +5,18 @@ import AnnotatedSentence.AnnotatedWord;
 import AnnotatedSentence.ViewLayerType;
 import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoPredicate;
 import DataCollector.Sentence.SentenceAnnotatorPanel;
-import Dictionary.Pos;
 import PropBank.Argument;
 import PropBank.FramesetList;
-import WordNet.WordNet;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class SentencePropbankPredicatePanel extends SentenceAnnotatorPanel {
     private TurkishSentenceAutoPredicate turkishSentenceAutoPredicate;
-    private WordNet wordNet;
 
-    public SentencePropbankPredicatePanel(String currentPath, String fileName, FramesetList xmlParser, WordNet wordNet){
+    public SentencePropbankPredicatePanel(String currentPath, String fileName, FramesetList xmlParser){
         super(currentPath, fileName, ViewLayerType.PROPBANK);
         setLayout(new BorderLayout());
-        this.wordNet = wordNet;
         turkishSentenceAutoPredicate = new TurkishSentenceAutoPredicate(xmlParser);
     }
 
@@ -70,7 +66,7 @@ public class SentencePropbankPredicatePanel extends SentenceAnnotatorPanel {
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         listModel.clear();
         listModel.addElement(new Argument("NONE", null));
-        if (word.getSemantic() != null && wordNet.getSynSetWithId(word.getSemantic()) != null && wordNet.getSynSetWithId(word.getSemantic()).getPos().equals(Pos.VERB)){
+        if (word.getSemantic() != null){
             listModel.addElement(new Argument("PREDICATE", word.getSemantic()));
         }
         if (word.getArgument() != null && word.getArgument().getArgumentType().equals("NONE")){

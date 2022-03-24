@@ -3,27 +3,24 @@ package Annotation.Sentence.FrameNet;
 import DataCollector.Sentence.SentenceAnnotatorFrame;
 import DataCollector.Sentence.SentenceAnnotatorPanel;
 import FrameNet.FrameNet;
-import WordNet.WordNet;
 
 import javax.swing.*;
 
 public class SentenceFrameNetPredicateFrame extends SentenceAnnotatorFrame {
     private JCheckBox autoPredicateDetectionOption;
     private FrameNet frameNet;
-    private WordNet wordNet;
 
     public SentenceFrameNetPredicateFrame() {
         super();
         autoPredicateDetectionOption = new JCheckBox("Auto Predicate Detection", false);
         toolBar.add(autoPredicateDetectionOption);
-        wordNet = new WordNet();
         frameNet = new FrameNet();
         JOptionPane.showMessageDialog(this, "WordNet and frameNet are loaded!", "Predicate Annotation", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     protected SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
-        return new SentenceFrameNetPredicatePanel(currentPath, rawFileName, frameNet, wordNet);
+        return new SentenceFrameNetPredicatePanel(currentPath, rawFileName, frameNet);
     }
 
     public void next(int count){
