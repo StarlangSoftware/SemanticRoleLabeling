@@ -7,8 +7,8 @@ import PropBank.FramesetList;
 import javax.swing.*;
 
 public class SentencePropbankArgumentFrame extends SentenceAnnotatorFrame {
-    private JCheckBox autoArgumentDetectionOption;
-    private FramesetList xmlParser;
+    private final JCheckBox autoArgumentDetectionOption;
+    private final FramesetList xmlParser;
 
     public SentencePropbankArgumentFrame() {
         super();

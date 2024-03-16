@@ -2,7 +2,6 @@ package Annotation.ParseTree.Propbank;
 
 import DataCollector.ParseTree.TreeEditorFrame;
 import DataCollector.ParseTree.TreeEditorPanel;
-import WordNet.WordNet;
 
 public class TreePropbankPredicateFrame extends TreeEditorFrame {
 

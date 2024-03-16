@@ -21,12 +21,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
-    private FramesetList framesetList;
-    private JTree tree;
-    private DefaultTreeModel treeModel;
+    private final FramesetList framesetList;
+    private final JTree tree;
+    private final DefaultTreeModel treeModel;
     private boolean selfSelected = false;
-    private HashSet<Frameset> currentFrameSets;
-    private TurkishSentenceAutoArgument turkishSentenceAutoArgument;
+    private final TurkishSentenceAutoArgument turkishSentenceAutoArgument;
 
     public SentencePropbankArgumentPanel(String currentPath, String fileName, FramesetList framesetList){
         super(currentPath, fileName, ViewLayerType.PROPBANK);
@@ -109,7 +108,7 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         boolean argTmp, argLoc, argDis, argMnr;
         DefaultMutableTreeNode selectedNode = null;
-        currentFrameSets = sentence.getPredicateSynSets(framesetList);
+        HashSet<Frameset> currentFrameSets = sentence.getPredicateSynSets(framesetList);
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();

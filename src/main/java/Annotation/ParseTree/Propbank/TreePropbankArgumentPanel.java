@@ -8,7 +8,6 @@ import PropBank.Argument;
 import PropBank.Frameset;
 import PropBank.FramesetArgument;
 import PropBank.FramesetList;
-import WordNet.*;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -19,9 +18,9 @@ import java.util.HashSet;
 
 public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
 
-    private FramesetList framesetList;
-    private JTree tree;
-    private DefaultTreeModel treeModel;
+    private final FramesetList framesetList;
+    private final JTree tree;
+    private final DefaultTreeModel treeModel;
 
     public TreePropbankArgumentPanel(String path, String fileName) {
         super(path, fileName, ViewLayerType.PROPBANK, false);

@@ -7,8 +7,8 @@ import FrameNet.FrameNet;
 import javax.swing.*;
 
 public class SentenceFrameNetPredicateFrame extends SentenceAnnotatorFrame {
-    private JCheckBox autoPredicateDetectionOption;
-    private FrameNet frameNet;
+    private final JCheckBox autoPredicateDetectionOption;
+    private final FrameNet frameNet;
 
     public SentenceFrameNetPredicateFrame() {
         super();

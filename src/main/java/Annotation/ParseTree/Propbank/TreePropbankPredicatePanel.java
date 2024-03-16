@@ -10,8 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TreePropbankPredicatePanel extends TreeLeafEditorPanel {
-    private JList list;
-    private DefaultListModel listModel;
+    private final JList list;
+    private final DefaultListModel listModel;
 
     public TreePropbankPredicatePanel(String path, String fileName) {
         super(path, fileName, ViewLayerType.PROPBANK, false);

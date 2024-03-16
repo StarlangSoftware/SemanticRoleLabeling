@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SentencePropbankPredicatePanel extends SentenceAnnotatorPanel {
-    private TurkishSentenceAutoPredicate turkishSentenceAutoPredicate;
+    private final TurkishSentenceAutoPredicate turkishSentenceAutoPredicate;
 
     public SentencePropbankPredicatePanel(String currentPath, String fileName, FramesetList xmlParser){
         super(currentPath, fileName, ViewLayerType.PROPBANK);

@@ -19,10 +19,9 @@ import java.util.ArrayList;
 
 public class SentenceFrameNetElementPanel extends SentenceAnnotatorPanel {
 
-    private FrameNet frameNet;
-    private JTree tree;
-    private DefaultTreeModel treeModel;
-    private ArrayList<DisplayedFrame> currentFrames;
+    private final FrameNet frameNet;
+    private final JTree tree;
+    private final DefaultTreeModel treeModel;
     private boolean selfSelected = false;
 
     public SentenceFrameNetElementPanel(String currentPath, String fileName, FrameNet frameNet){
@@ -97,7 +96,7 @@ public class SentenceFrameNetElementPanel extends SentenceAnnotatorPanel {
 
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         DefaultMutableTreeNode selectedNode = null;
-        currentFrames = sentence.getFrames(frameNet);
+        ArrayList<DisplayedFrame> currentFrames = sentence.getFrames(frameNet);
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();

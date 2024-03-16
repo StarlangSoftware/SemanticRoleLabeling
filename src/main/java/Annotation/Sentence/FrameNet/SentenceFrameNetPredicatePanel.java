@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SentenceFrameNetPredicatePanel extends SentenceAnnotatorPanel {
-    private TurkishSentenceAutoFramePredicate turkishSentenceAutoFramePredicate;
+    private final TurkishSentenceAutoFramePredicate turkishSentenceAutoFramePredicate;
 
     public SentenceFrameNetPredicatePanel(String currentPath, String fileName, FrameNet frameNet){
         super(currentPath, fileName, ViewLayerType.FRAMENET);

@@ -7,7 +7,7 @@ import PropBank.FramesetList;
 import java.util.ArrayList;
 
 public class TurkishSentenceAutoPredicate extends SentenceAutoPredicate {
-    private FramesetList framesetList;
+    private final FramesetList framesetList;
 
     /**
      * Constructor for {@link TurkishSentenceAutoPredicate}. Gets the FrameSets as input from the user, and sets
@@ -29,10 +29,7 @@ public class TurkishSentenceAutoPredicate extends SentenceAutoPredicate {
         for (AnnotatedWord word : candidateList){
             word.setArgument("PREDICATE$" + word.getSemantic());
         }
-        if (candidateList.size() > 0){
-            return true;
-        }
-        return false;
+        return !candidateList.isEmpty();
     }
 
 }

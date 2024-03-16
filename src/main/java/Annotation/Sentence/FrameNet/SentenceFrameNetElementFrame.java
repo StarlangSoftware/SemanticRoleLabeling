@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class SentenceFrameNetElementFrame extends SentenceAnnotatorFrame {
 
-    private FrameNet frameNet;
+    private final FrameNet frameNet;
 
     public SentenceFrameNetElementFrame() {
         super();

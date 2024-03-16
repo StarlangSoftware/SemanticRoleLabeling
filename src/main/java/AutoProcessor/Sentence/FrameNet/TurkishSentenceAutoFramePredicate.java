@@ -23,9 +23,6 @@ public class TurkishSentenceAutoFramePredicate extends SentenceAutoFramePredicat
         for (AnnotatedWord word : candidateList){
             word.setFrameElement("PREDICATE$NONE$" + word.getSemantic());
         }
-        if (candidateList.size() > 0){
-            return true;
-        }
-        return false;
+        return !candidateList.isEmpty();
     }
 }
