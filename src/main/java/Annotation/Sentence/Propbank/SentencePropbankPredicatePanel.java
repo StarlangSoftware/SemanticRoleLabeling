@@ -13,10 +13,12 @@ import java.util.ArrayList;
 
 public class SentencePropbankPredicatePanel extends SentenceAnnotatorPanel {
     private final TurkishSentenceAutoPredicate turkishSentenceAutoPredicate;
+    private final FramesetList xmlParser;
 
     public SentencePropbankPredicatePanel(String currentPath, String fileName, FramesetList xmlParser){
         super(currentPath, fileName, ViewLayerType.PROPBANK);
         setLayout(new BorderLayout());
+        this.xmlParser = xmlParser;
         turkishSentenceAutoPredicate = new TurkishSentenceAutoPredicate(xmlParser);
     }
 
@@ -66,7 +68,7 @@ public class SentencePropbankPredicatePanel extends SentenceAnnotatorPanel {
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         listModel.clear();
         listModel.addElement(new Argument("NONE", null));
-        if (word.getSemantic() != null){
+        if (word.getSemantic() != null && xmlParser.frameExists(word.getSemantic())){
             listModel.addElement(new Argument("PREDICATE", word.getSemantic()));
         }
         if (word.getArgument() != null && word.getArgument().getArgumentType().equals("NONE")){
