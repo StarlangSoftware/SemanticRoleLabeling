@@ -10,6 +10,10 @@ public class SentenceFrameNetPredicateFrame extends SentenceAnnotatorFrame {
     private final JCheckBox autoPredicateDetectionOption;
     private final FrameNet frameNet;
 
+    /**
+     * Constructor for {@link SentenceFrameNetPredicateFrame}. Adds automatic predicate detection
+     * button. Loads the Turkish FrameNet.
+     */
     public SentenceFrameNetPredicateFrame() {
         super();
         autoPredicateDetectionOption = new JCheckBox("Auto Predicate Detection", false);
@@ -23,6 +27,12 @@ public class SentenceFrameNetPredicateFrame extends SentenceAnnotatorFrame {
         return new SentenceFrameNetPredicatePanel(currentPath, rawFileName, frameNet);
     }
 
+    /**
+     * The next method takes an int count as input and moves forward along the SentenceFrameNetPredicatePanels as much
+     * as the count. If the autoPredicateDetectionOption is selected, it automatically assigns predicate tags to
+     * some words.
+     * @param count Integer count is used to move forward.
+     */
     public void next(int count){
         super.next(count);
         SentenceFrameNetPredicatePanel current;
@@ -32,6 +42,12 @@ public class SentenceFrameNetPredicateFrame extends SentenceAnnotatorFrame {
         }
     }
 
+    /**
+     * The previous method takes an int count as input and moves forward along the SentenceFrameNetPredicatePanels as
+     * much  as the count. If the autoPredicateDetectionOption is selected, it automatically assigns predicate tags to
+     * some words.
+     * @param count Integer count is used to move backward.
+     */
     public void previous(int count){
         super.previous(count);
         SentenceFrameNetPredicatePanel current;

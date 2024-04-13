@@ -1,10 +1,8 @@
-package Annotation.Sentence.Propbank;
+package Annotation.Sentence.PropBank;
 
 import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
-import AnnotatedSentence.ViewLayerType;
 import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoArgument;
-import DataCollector.Sentence.SentenceAnnotatorPanel;
 import PropBank.Frameset;
 import PropBank.FramesetArgument;
 import PropBank.FramesetList;
@@ -17,20 +15,23 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 
-public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
-    private final FramesetList framesetList;
+public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
     private final JTree tree;
     private final DefaultTreeModel treeModel;
     private boolean selfSelected = false;
     private final TurkishSentenceAutoArgument turkishSentenceAutoArgument;
 
-    public SentencePropbankArgumentPanel(String currentPath, String fileName, FramesetList framesetList){
-        super(currentPath, fileName, ViewLayerType.PROPBANK);
+    /**
+     * Constructor for the PropBank argument panel for annotated sentence.
+     * @param currentPath The absolute path of the annotated sentence.
+     * @param fileName The raw file name of the annotated sentence.
+     * @param framesetList Turkish PropBank
+     */
+    public SentencePropBankArgumentPanel(String currentPath, String fileName, FramesetList framesetList){
+        super(currentPath, fileName, framesetList);
         setLayout(new BorderLayout());
-        this.framesetList = framesetList;
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("FrameSets");
         turkishSentenceAutoArgument = new TurkishSentenceAutoArgument();
         treeModel = new DefaultTreeModel(rootNode);
@@ -63,41 +64,9 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
         setFocusable(false);
     }
 
-    @Override
-    protected void setWordLayer() {
-        clickedWord.setArgument(list.getSelectedValue().toString());
-    }
-
-    @Override
-    protected void setBounds() {
-        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + 20, 240, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
-    }
-
-    @Override
-    protected void setLineSpace() {
-        lineSpace = 80;
-    }
-
-    @Override
-    protected void drawLayer(AnnotatedWord word, Graphics g, int currentLeft, int lineIndex, int wordIndex, int maxSize, ArrayList<Integer> wordSize, ArrayList<Integer> wordTotal) {
-        if (word.getArgument() != null){
-            String correct = word.getArgument().getArgumentType();
-            g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
-        }
-    }
-
-    @Override
-    protected int getMaxLayerLength(AnnotatedWord word, Graphics g) {
-        int maxSize = g.getFontMetrics().stringWidth(word.getName());
-        if (word.getArgument() != null){
-            int size = g.getFontMetrics().stringWidth(word.getArgument().getArgumentType());
-            if (size > maxSize){
-                maxSize = size;
-            }
-        }
-        return maxSize;
-    }
-
+    /**
+     * Automatically detects the FrameNet element tags in the sentence using turkishSentenceAutoArgument.
+     */
     public void autoDetect(){
         if (turkishSentenceAutoArgument.autoArgument(sentence)){
             sentence.save();
@@ -105,6 +74,12 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
         }
     }
 
+    /**
+     * Fills the JList that contains all PropBank arguments for all the predicates in the parse tree.
+     * @param sentence Sentence used to populate for the current word.
+     * @param wordIndex Index of the selected word.
+     * @return Index of the selected tag.
+     */
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         boolean argTmp, argLoc, argDis, argMnr;
         DefaultMutableTreeNode selectedNode = null;
@@ -161,6 +136,10 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
         return -1;
     }
 
+    /**
+     * Constructs the JList for options.
+     * @param mouseEvent Mouse event to be processed.
+     */
     public void mouseClicked(MouseEvent mouseEvent) {
         if (selectedWordIndex != -1){
             populateLeaf(sentence, selectedWordIndex);
@@ -173,6 +152,12 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
         }
     }
 
+    /**
+     * Displays the previous sentence according to the index of the sentence. For example, if the current
+     * sentence fileName is 0123.train, after the call of previous(4), the panel will display 0119.train. If the
+     * previous sentence does not exist or the previous sentence does not contain the predicate, nothing will happen.
+     * @param count Number of sentences to go backward
+     */
     public void previous(int count) {
         while (fileDescription.previousFileExists(count)){
             fileDescription.addToIndex(-count);
@@ -185,6 +170,12 @@ public class SentencePropbankArgumentPanel extends SentenceAnnotatorPanel {
         repaint();
     }
 
+    /**
+     * Displays the next sentence according to the index of the sentence. For example, if the current
+     * sentence fileName is 0123.train, after the call of previous(4), the panel will display 0119.train. If the
+     * previous sentence does not exist or the previous sentence does not contain the predicate, nothing will happen.
+     * @param count Number of sentences to go backward
+     */
     public void next(int count) {
         while (fileDescription.nextFileExists(count)){
             fileDescription.addToIndex(count);

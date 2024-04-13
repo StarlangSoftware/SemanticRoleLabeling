@@ -1,4 +1,4 @@
-package AutoProcessor.ParseTree.Propbank;
+package AutoProcessor.ParseTree.PropBank;
 
 import AnnotatedSentence.ViewLayerType;
 import Dictionary.Word;

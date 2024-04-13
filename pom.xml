@@ -50,7 +50,7 @@
         <dependency>
             <groupId>io.github.starlangsoftware</groupId>
             <artifactId>DataCollector</artifactId>
-            <version>1.0.44</version>
+            <version>1.0.61</version>
         </dependency>
     </dependencies>
 
@@ -157,7 +157,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>Annotation.Sentence.Propbank.TestSentencePropbankPredicateFrame</mainClass>
+                                    <mainClass>Annotation.Sentence.PropBank.TestSentencePropBankPredicateFrame</mainClass>
                                 </manifest>
                             </archive>
                             <finalName>sentence-propbank-predicate</finalName>
@@ -172,7 +172,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>Annotation.Sentence.Propbank.TestSentencePropbankArgumentFrame</mainClass>
+                                    <mainClass>Annotation.Sentence.PropBank.TestSentencePropBankArgumentFrame</mainClass>
                                 </manifest>
                             </archive>
                             <finalName>sentence-propbank-argument</finalName>
@@ -187,7 +187,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>Annotation.ParseTree.Propbank.TestPropbankPredicateFrame</mainClass>
+                                    <mainClass>Annotation.ParseTree.PropBank.TestPropBankPredicateFrame</mainClass>
                                 </manifest>
                             </archive>
                             <finalName>tree-propbank-predicate</finalName>
@@ -202,7 +202,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>Annotation.ParseTree.Propbank.TestPropbankArgumentFrame</mainClass>
+                                    <mainClass>Annotation.ParseTree.PropBank.TestPropBankArgumentFrame</mainClass>
                                 </manifest>
                             </archive>
                             <finalName>tree-propbank-argument</finalName>

@@ -4,57 +4,29 @@ import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
 import AnnotatedSentence.ViewLayerType;
 import AutoProcessor.Sentence.FrameNet.TurkishSentenceAutoFramePredicate;
-import DataCollector.Sentence.SentenceAnnotatorPanel;
 import FrameNet.FrameElement;
 import FrameNet.FrameNet;
 
 import java.awt.*;
-import java.util.ArrayList;
 
-public class SentenceFrameNetPredicatePanel extends SentenceAnnotatorPanel {
+public class SentenceFrameNetPredicatePanel extends SentenceFrameNetPanel {
     private final TurkishSentenceAutoFramePredicate turkishSentenceAutoFramePredicate;
 
+    /**
+     * Constructor for the FrameNet predicate panel for an annotated sentence. Sets the attributes.
+     * @param currentPath The absolute path of the annotated file.
+     * @param fileName The raw file name of the annotated file.
+     * @param frameNet Turkish FrameNet
+     */
     public SentenceFrameNetPredicatePanel(String currentPath, String fileName, FrameNet frameNet){
         super(currentPath, fileName, ViewLayerType.FRAMENET);
         setLayout(new BorderLayout());
         turkishSentenceAutoFramePredicate = new TurkishSentenceAutoFramePredicate(frameNet);
     }
 
-    @Override
-    protected void setWordLayer() {
-        clickedWord.setFrameElement(list.getSelectedValue().toString());
-    }
-
-    @Override
-    protected void setBounds() {
-        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getHeight(), 120, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
-    }
-
-    @Override
-    protected void setLineSpace() {
-        lineSpace = 80;
-    }
-
-    @Override
-    protected void drawLayer(AnnotatedWord word, Graphics g, int currentLeft, int lineIndex, int wordIndex, int maxSize, ArrayList<Integer> wordSize, ArrayList<Integer> wordTotal) {
-        if (word.getFrameElement() != null){
-            String correct = word.getFrameElement().getFrameElementType();
-            g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
-        }
-    }
-
-    @Override
-    protected int getMaxLayerLength(AnnotatedWord word, Graphics g) {
-        int maxSize = g.getFontMetrics().stringWidth(word.getName());
-        if (word.getFrameElement() != null){
-            int size = g.getFontMetrics().stringWidth(word.getFrameElement().getFrameElementType());
-            if (size > maxSize){
-                maxSize = size;
-            }
-        }
-        return maxSize;
-    }
-
+    /**
+     * Automatically detects the Frame predicate tag of words in the sentence using turkishSentenceAutoNER.
+     */
     public void autoDetect(){
         if (turkishSentenceAutoFramePredicate.autoPredicate(sentence)){
             sentence.save();
@@ -62,6 +34,12 @@ public class SentenceFrameNetPredicatePanel extends SentenceAnnotatorPanel {
         }
     }
 
+    /**
+     * Fills the JList that contains NONE and PREDICATE tag with the words semantic id.
+     * @param sentence Sentence used to populate for the current word.
+     * @param wordIndex Index of the selected word.
+     * @return The index of the selected tag, -1 if nothing selected.
+     */
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         listModel.clear();

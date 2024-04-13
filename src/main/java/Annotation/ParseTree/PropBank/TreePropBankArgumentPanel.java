@@ -1,9 +1,8 @@
-package Annotation.ParseTree.Propbank;
+package Annotation.ParseTree.PropBank;
 
 import AnnotatedSentence.ViewLayerType;
 import AnnotatedTree.*;
 import DataCollector.ParseTree.TreeAction.LayerAction;
-import DataCollector.ParseTree.TreeLeafEditorPanel;
 import PropBank.Argument;
 import PropBank.Frameset;
 import PropBank.FramesetArgument;
@@ -13,16 +12,21 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.*;
 import java.util.HashSet;
 
-public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
+public class TreePropBankArgumentPanel extends TreePropBankPanel {
 
     private final FramesetList framesetList;
     private final JTree tree;
     private final DefaultTreeModel treeModel;
 
-    public TreePropbankArgumentPanel(String path, String fileName) {
+    /**
+     * Constructor for the PropBank argument panel for a parse tree. Constructs the list used to annotated words. It
+     * also adds the list selection listener which will update the parse tree according to the selection.
+     * @param path The absolute path of the annotated parse tree.
+     * @param fileName The raw file name of the annotated parse tree.
+     */
+    public TreePropBankArgumentPanel(String path, String fileName) {
         super(path, fileName, ViewLayerType.PROPBANK, false);
         framesetList = new FramesetList();
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("FrameSets");
@@ -37,9 +41,9 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
                 if (treeNode.getLevel() == 2){
                     String predicateSynSet = (String)((DefaultMutableTreeNode)treeNode.getParent()).getUserObject();
                     FramesetArgument argument = (FramesetArgument) treeNode.getUserObject();
-                    action = new LayerAction(((TreePropbankArgumentPanel)((JTree) e.getSource()).getParent().getParent().getParent()), previousNode.getLayerInfo(), argument.getArgumentType() + "$" + predicateSynSet, ViewLayerType.PROPBANK);
+                    action = new LayerAction(((TreePropBankArgumentPanel)((JTree) e.getSource()).getParent().getParent().getParent()), previousNode.getLayerInfo(), argument.getArgumentType() + "$" + predicateSynSet, ViewLayerType.PROPBANK);
                 } else {
-                    action = new LayerAction(((TreePropbankArgumentPanel)((JTree) e.getSource()).getParent().getParent().getParent()), previousNode.getLayerInfo(), "NONE", ViewLayerType.PROPBANK);
+                    action = new LayerAction(((TreePropBankArgumentPanel)((JTree) e.getSource()).getParent().getParent().getParent()), previousNode.getLayerInfo(), "NONE", ViewLayerType.PROPBANK);
                 }
                 actionList.add(action);
                 action.execute();
@@ -57,6 +61,10 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
         addMouseMotionListener(this);
     }
 
+    /**
+     * Fills the JList that contains all PropBank arguments for all the predicates in the parse tree.
+     * @param node Selected node for which options will be displayed.
+     */
     public void populateLeaf(ParseNodeDrawable node){
         DefaultMutableTreeNode selectedNode = null;
         if (previousNode != null){
@@ -88,41 +96,6 @@ public class TreePropbankArgumentPanel extends TreeLeafEditorPanel {
         pane.setBounds(node.getArea().getX() - 5, node.getArea().getY() + 30, 250, 200);
         this.repaint();
         isEditing = true;
-    }
-
-    protected int getStringSize(ParseNodeDrawable parseNode, Graphics g) {
-        if (parseNode.numberOfChildren() == 0) {
-            if (parseNode.getLayerInfo().getArgument() != null){
-                return g.getFontMetrics().stringWidth(parseNode.getLayerInfo().getArgument().getArgumentType());
-            } else {
-                return g.getFontMetrics().stringWidth(parseNode.getData().getName());
-            }
-        } else {
-            return g.getFontMetrics().stringWidth(parseNode.getData().getName());
-        }
-    }
-
-    protected void drawString(ParseNodeDrawable parseNode, Graphics g, int x, int y){
-        if (parseNode.numberOfChildren() == 0){
-            g.drawString(parseNode.getLayerData(ViewLayerType.TURKISH_WORD), x, y);
-            g.setColor(Color.RED);
-            y += 25;
-            if (parseNode.getLayerInfo().getArgument() != null){
-                g.drawString(parseNode.getLayerInfo().getArgument().getArgumentType(), x, y);
-                if (parseNode.getLayerInfo().getArgument().getId() != null){
-                    Font previousFont = g.getFont();
-                    g.setFont(new Font("Serif", Font.PLAIN, 10));
-                    g.drawString(parseNode.getLayerInfo().getArgument().getId(), x - 15, y + 10);
-                    g.setFont(previousFont);
-                }
-            }
-        } else {
-            g.drawString(parseNode.getData().getName(), x, y);
-        }
-    }
-
-    protected void setArea(ParseNodeDrawable parseNode, int x, int y, int stringSize){
-        parseNode.setArea(x - 5, y - 15, stringSize + 10, 20);
     }
 
 }

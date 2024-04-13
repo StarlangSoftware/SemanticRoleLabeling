@@ -10,6 +10,9 @@ public class SentenceFrameNetElementFrame extends SentenceAnnotatorFrame {
 
     private final FrameNet frameNet;
 
+    /**
+     * Constructor for {@link SentenceFrameNetElementFrame}. Loads the Turkish FrameNet and WordNet.
+     */
     public SentenceFrameNetElementFrame() {
         super();
         frameNet = new FrameNet();
