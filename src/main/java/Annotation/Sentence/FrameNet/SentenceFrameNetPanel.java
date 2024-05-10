@@ -54,7 +54,9 @@ public class SentenceFrameNetPanel extends SentenceAnnotatorPanel {
             String correct = word.getFrameElement().getFrameElementType();
             g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
             String id = word.getFrameElement().getId();
-            g.drawString(id, currentLeft, (lineIndex + 1) * lineSpace + 50);
+            if (id != null){
+                g.drawString(id, currentLeft, (lineIndex + 1) * lineSpace + 50);
+            }
         }
     }
 

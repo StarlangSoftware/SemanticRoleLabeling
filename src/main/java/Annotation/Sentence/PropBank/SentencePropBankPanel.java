@@ -57,7 +57,9 @@ public class SentencePropBankPanel extends SentenceAnnotatorPanel {
             String correct = word.getArgument().getArgumentType();
             g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
             String id = word.getArgument().getId();
-            g.drawString(id, currentLeft, (lineIndex + 1) * lineSpace + 50);
+            if (id != null){
+                g.drawString(id, currentLeft, (lineIndex + 1) * lineSpace + 50);
+            }
         }
     }
 
