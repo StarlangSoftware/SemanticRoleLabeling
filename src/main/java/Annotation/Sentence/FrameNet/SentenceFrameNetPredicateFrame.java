@@ -19,7 +19,7 @@ public class SentenceFrameNetPredicateFrame extends SentenceAnnotatorFrame {
         autoPredicateDetectionOption = new JCheckBox("Auto Predicate Detection", false);
         toolBar.add(autoPredicateDetectionOption);
         frameNet = new FrameNet();
-        JOptionPane.showMessageDialog(this, "WordNet and frameNet are loaded!", "Predicate Annotation", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "FrameNet is loaded!", "Predicate Annotation", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override

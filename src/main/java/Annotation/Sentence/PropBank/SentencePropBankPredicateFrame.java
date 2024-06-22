@@ -1,10 +1,17 @@
 package Annotation.Sentence.PropBank;
 
+import AnnotatedSentence.AnnotatedCorpus;
 import DataCollector.Sentence.SentenceAnnotatorFrame;
 import DataCollector.Sentence.SentenceAnnotatorPanel;
 import PropBank.FramesetList;
 
 import javax.swing.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Properties;
 
 public class SentencePropBankPredicateFrame extends SentenceAnnotatorFrame {
     private final JCheckBox autoPredicateDetectionOption;
@@ -16,10 +23,23 @@ public class SentencePropBankPredicateFrame extends SentenceAnnotatorFrame {
      */
     public SentencePropBankPredicateFrame() {
         super();
+        AnnotatedCorpus annotatedCorpus;
+        String subFolder = "false";
+        Properties properties1 = new Properties();
+        try {
+            properties1.load(Files.newInputStream(new File("config.properties").toPath()));
+            if (properties1.containsKey("subFolder")){
+                subFolder = properties1.getProperty("subFolder");
+            }
+        } catch (IOException ignored) {
+        }
+        annotatedCorpus = readCorpus(subFolder);
         autoPredicateDetectionOption = new JCheckBox("Auto Predicate Detection", false);
         toolBar.add(autoPredicateDetectionOption);
         xmlParser = new FramesetList();
-        JOptionPane.showMessageDialog(this, "WordNet and PropBank are loaded!", "PropBank Predicate Annotation", JOptionPane.INFORMATION_MESSAGE);
+        JMenuItem itemViewAnnotated = addMenuItem(projectMenu, "View Annotations", KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+        itemViewAnnotated.addActionListener(e -> new ViewSentencePropBankPredicateAnnotationFrame(annotatedCorpus, xmlParser, this));
+        JOptionPane.showMessageDialog(this, "PropBank is loaded!", "PropBank Predicate Annotation", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
