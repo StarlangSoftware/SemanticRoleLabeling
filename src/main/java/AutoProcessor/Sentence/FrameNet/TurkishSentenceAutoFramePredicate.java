@@ -17,6 +17,11 @@ public class TurkishSentenceAutoFramePredicate extends SentenceAutoFramePredicat
         this.frameNet = frameNet;
     }
 
+    /**
+     * Checks all possible frame predicates and annotate them.
+     * @param sentence The sentence for which frame predicates will be determined automatically.
+     * @return True, if at least one frame predicate is annotated, false otherwise.
+     */
     @Override
     public boolean autoPredicate(AnnotatedSentence sentence) {
         ArrayList<AnnotatedWord> candidateList = sentence.predicateFrameCandidates(frameNet);
