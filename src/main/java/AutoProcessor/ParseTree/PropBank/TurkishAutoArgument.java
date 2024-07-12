@@ -7,6 +7,9 @@ import PropBank.ArgumentType;
 
 public class TurkishAutoArgument extends AutoArgument {
 
+    /**
+     * Sets the language.
+     */
     public TurkishAutoArgument() {
         super(ViewLayerType.TURKISH_WORD);
     }
