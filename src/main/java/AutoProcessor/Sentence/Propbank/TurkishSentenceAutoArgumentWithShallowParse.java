@@ -3,8 +3,18 @@ package AutoProcessor.Sentence.Propbank;
 import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
 import MorphologicalAnalysis.MorphologicalTag;
+import PropBank.ArgumentType;
+import PropBank.FramesetList;
 
-public class TurkishSentenceAutoArgument extends SentenceAutoArgument {
+public class TurkishSentenceAutoArgumentWithShallowParse extends SentenceAutoArgument {
+
+    /**
+     * Constructor for TurkishSentenceAutoArgumentWithShallowParse. Sets the Turkish propbank.
+     * @param framesetList Turkish propbank.
+     */
+    public TurkishSentenceAutoArgumentWithShallowParse(FramesetList framesetList) {
+        this.framesetList = framesetList;
+    }
 
     /**
      * Given the sentence for which the predicate(s) were determined before, this method automatically assigns
@@ -16,20 +26,27 @@ public class TurkishSentenceAutoArgument extends SentenceAutoArgument {
      */
     public boolean autoArgument(AnnotatedSentence sentence) {
         boolean modified = false;
+        boolean onlyArg1 = false;
         String predicateId = null;
         for (int i = 0; i < sentence.wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
             if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE")){
+                if (word.getParse() != null && word.getParse().containsTag(MorphologicalTag.PASSIVE)){
+                    onlyArg1 = true;
+                }
                 predicateId = word.getArgument().getId();
                 break;
             }
+        }
+        if (framesetList.frameExists(predicateId) && !framesetList.getFrameSet(predicateId).containsArgument(ArgumentType.ARG0)){
+            onlyArg1 = true;
         }
         if (predicateId != null){
             for (int i = 0; i < sentence.wordCount(); i++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
                 if (word.getArgument() == null){
                     if (word.getShallowParse() != null && word.getShallowParse().equalsIgnoreCase("ÖZNE")){
-                        if (word.getParse() != null && word.getParse().containsTag(MorphologicalTag.PASSIVE)){
+                        if (word.getParse() != null && onlyArg1){
                             word.setArgument("ARG1$" + predicateId);
                         } else {
                             word.setArgument("ARG0$" + predicateId);

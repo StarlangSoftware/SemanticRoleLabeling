@@ -1,8 +1,11 @@
 package AutoProcessor.Sentence.Propbank;
 
 import AnnotatedSentence.AnnotatedSentence;
+import PropBank.FramesetList;
 
 public abstract class SentenceAutoArgument {
+
+    protected FramesetList framesetList;
     /**
      * The method should set all the semantic role labels in the sentence. The method assumes that the predicates
      * of the sentences were determined previously.

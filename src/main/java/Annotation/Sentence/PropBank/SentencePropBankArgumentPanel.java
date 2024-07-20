@@ -2,7 +2,9 @@ package Annotation.Sentence.PropBank;
 
 import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
-import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoArgument;
+import AutoProcessor.Sentence.Propbank.SentenceAutoArgument;
+import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoArgumentWithDependency;
+import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoArgumentWithShallowParse;
 import PropBank.Frameset;
 import PropBank.FramesetArgument;
 import PropBank.FramesetList;
@@ -21,7 +23,7 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
     private final JTree tree;
     private final DefaultTreeModel treeModel;
     private boolean selfSelected = false;
-    private final TurkishSentenceAutoArgument turkishSentenceAutoArgument;
+    private final SentenceAutoArgument turkishSentenceAutoArgument;
 
     /**
      * Constructor for the PropBank argument panel for annotated sentence.
@@ -33,7 +35,7 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
         super(currentPath, fileName, framesetList);
         setLayout(new BorderLayout());
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("FrameSets");
-        turkishSentenceAutoArgument = new TurkishSentenceAutoArgument();
+        turkishSentenceAutoArgument = new TurkishSentenceAutoArgumentWithDependency(framesetList);
         treeModel = new DefaultTreeModel(rootNode);
         tree = new JTree(treeModel);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
