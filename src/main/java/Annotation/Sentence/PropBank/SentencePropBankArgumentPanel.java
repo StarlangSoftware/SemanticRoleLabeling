@@ -46,7 +46,12 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
                 if (node.getLevel() == 2){
                     String synSet = (String) ((DefaultMutableTreeNode)node.getParent()).getUserObject();
                     FramesetArgument argument = (FramesetArgument) node.getUserObject();
-                    clickedWord.setArgument(argument.getArgumentType() + "$" + synSet);
+                    for (int i = 0; i < sentence.wordCount(); i++){
+                        AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
+                        if (word.isSelected()){
+                            word.setArgument(argument.getArgumentType() + "$" + synSet);
+                        }
+                    }
                     sentence.writeToFile(new File(fileDescription.getFileName()));
                 } else {
                     if (node.getLevel() == 0){

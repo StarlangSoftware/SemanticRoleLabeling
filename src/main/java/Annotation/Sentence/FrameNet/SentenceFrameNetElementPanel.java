@@ -44,7 +44,12 @@ public class SentenceFrameNetElementPanel extends SentenceFrameNetPanel {
                 if (node.getLevel() == 2){
                     DisplayedFrame displayedFrame = (DisplayedFrame) ((DefaultMutableTreeNode)node.getParent()).getUserObject();
                     String frameElement = (String) node.getUserObject();
-                    clickedWord.setFrameElement(frameElement + "$" + displayedFrame.getFrame().getName() + "$" + displayedFrame.getLexicalUnit());
+                    for (int i = 0; i < sentence.wordCount(); i++){
+                        AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
+                        if (word.isSelected()){
+                            word.setFrameElement(frameElement + "$" + displayedFrame.getFrame().getName() + "$" + displayedFrame.getLexicalUnit());
+                        }
+                    }
                     sentence.writeToFile(new File(fileDescription.getFileName()));
                 } else {
                     if (node.getLevel() == 0){
