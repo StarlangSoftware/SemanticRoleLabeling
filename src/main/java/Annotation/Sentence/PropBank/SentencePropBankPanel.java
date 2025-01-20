@@ -16,12 +16,8 @@ public class SentencePropBankPanel extends SentenceAnnotatorPanel {
         this.framesetList = framesetList;
     }
 
-    /**
-     * Updates the FrameNet layer of the annotated word.
-     */
     @Override
     protected void setWordLayer() {
-        clickedWord.setArgument(list.getSelectedValue().toString());
     }
 
     /**
@@ -37,7 +33,7 @@ public class SentencePropBankPanel extends SentenceAnnotatorPanel {
      */
     @Override
     protected void setLineSpace() {
-        lineSpace = 80;
+        lineSpace = 100;
     }
 
     /**
@@ -53,12 +49,12 @@ public class SentencePropBankPanel extends SentenceAnnotatorPanel {
      */
     @Override
     protected void drawLayer(AnnotatedWord word, Graphics g, int currentLeft, int lineIndex, int wordIndex, int maxSize, ArrayList<Integer> wordSize, ArrayList<Integer> wordTotal) {
-        if (word.getArgument() != null){
-            String correct = word.getArgument().getArgumentType();
-            g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
-            String id = word.getArgument().getId();
-            if (id != null){
-                g.drawString(id, currentLeft, (lineIndex + 1) * lineSpace + 50);
+        if (word.getArgumentList() != null){
+            ArrayList<String> arguments = word.getArgumentList().getArguments();
+            int i = 0;
+            for (String argument : arguments) {
+                g.drawString(argument, currentLeft, (lineIndex + 1) * lineSpace + 25 * (i + 1));
+                i++;
             }
         }
     }
@@ -72,10 +68,13 @@ public class SentencePropBankPanel extends SentenceAnnotatorPanel {
     @Override
     protected int getMaxLayerLength(AnnotatedWord word, Graphics g) {
         int maxSize = g.getFontMetrics().stringWidth(word.getName());
-        if (word.getArgument() != null){
-            int size = g.getFontMetrics().stringWidth(word.getArgument().getArgumentType());
-            if (size > maxSize){
-                maxSize = size;
+        if (word.getArgumentList() != null){
+            ArrayList<String> arguments = word.getArgumentList().getArguments();
+            for (String argument : arguments) {
+                int size = g.getFontMetrics().stringWidth(argument);
+                if (size > maxSize){
+                    maxSize = size;
+                }
             }
         }
         return maxSize;

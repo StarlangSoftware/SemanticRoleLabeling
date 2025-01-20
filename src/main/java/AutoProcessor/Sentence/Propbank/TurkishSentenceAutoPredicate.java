@@ -27,7 +27,7 @@ public class TurkishSentenceAutoPredicate extends SentenceAutoPredicate {
     public boolean autoPredicate(AnnotatedSentence sentence){
         ArrayList<AnnotatedWord> candidateList = sentence.predicateCandidates(framesetList);
         for (AnnotatedWord word : candidateList){
-            word.setArgument("PREDICATE$" + word.getSemantic());
+            word.setArgumentList("PREDICATE$" + word.getSemantic());
         }
         return !candidateList.isEmpty();
     }

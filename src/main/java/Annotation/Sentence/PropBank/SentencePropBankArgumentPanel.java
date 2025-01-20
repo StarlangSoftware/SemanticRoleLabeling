@@ -4,7 +4,7 @@ import AnnotatedSentence.AnnotatedSentence;
 import AnnotatedSentence.AnnotatedWord;
 import AutoProcessor.Sentence.Propbank.SentenceAutoArgument;
 import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoArgumentWithDependency;
-import AutoProcessor.Sentence.Propbank.TurkishSentenceAutoArgumentWithShallowParse;
+import PropBank.ArgumentList;
 import PropBank.Frameset;
 import PropBank.FramesetArgument;
 import PropBank.FramesetList;
@@ -17,6 +17,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
@@ -41,23 +42,32 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         tree.setVisible(false);
         tree.addTreeSelectionListener(e -> {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-            if (node != null && clickedWord != null && !selfSelected) {
-                if (node.getLevel() == 2){
-                    String synSet = (String) ((DefaultMutableTreeNode)node.getParent()).getUserObject();
-                    FramesetArgument argument = (FramesetArgument) node.getUserObject();
-                    for (int i = 0; i < sentence.wordCount(); i++){
+            TreePath[] list = tree.getSelectionPaths();
+            if (!selfSelected && clickedWord != null && list != null && list.length > 0) {
+                if (list.length == 1 && ((DefaultMutableTreeNode)list[0].getLastPathComponent()).getLevel() == 0) {
+                    clickedWord.setArgumentList("NONE");
+                    sentence.writeToFile(new File(fileDescription.getFileName()));
+                } else {
+                    for (int i = 0; i < sentence.wordCount(); i++) {
                         AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
                         if (word.isSelected()){
-                            word.setArgument(argument.getArgumentType() + "$" + synSet);
+                            String argumentList = "";
+                            for (int j = 0; j < list.length; j++) {
+                                DefaultMutableTreeNode node = (DefaultMutableTreeNode) list[j].getLastPathComponent();
+                                if (node.getLevel() == 2){
+                                    String synSet = (String) ((DefaultMutableTreeNode)node.getParent()).getUserObject();
+                                    FramesetArgument argument = (FramesetArgument) node.getUserObject();
+                                    if (argumentList.isEmpty()){
+                                        argumentList = argument.getArgumentType() + "$" + synSet;
+                                    } else {
+                                        argumentList += "#" + argument.getArgumentType() + "$" + synSet;
+                                    }
+                                }
+                            }
+                            word.setArgumentList(argumentList);
                         }
                     }
                     sentence.writeToFile(new File(fileDescription.getFileName()));
-                } else {
-                    if (node.getLevel() == 0){
-                        clickedWord.setArgument("NONE");
-                        sentence.writeToFile(new File(fileDescription.getFileName()));
-                    }
                 }
             }
             clickedWord = null;
@@ -89,14 +99,21 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
      */
     public int populateLeaf(AnnotatedSentence sentence, int wordIndex){
         boolean argTmp, argLoc, argDis, argMnr;
-        DefaultMutableTreeNode selectedNode = null;
+        ArrayList<DefaultMutableTreeNode> selectedNodes = new ArrayList<>();
         HashSet<Frameset> currentFrameSets = sentence.getPredicateSynSets(framesetList);
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(wordIndex);
         ((DefaultMutableTreeNode)treeModel.getRoot()).removeAllChildren();
         treeModel.reload();
+        ArgumentList argumentList = word.getArgumentList();
         for (Frameset frameset : currentFrameSets){
             DefaultMutableTreeNode frameNode = new DefaultMutableTreeNode(frameset.getId());
             ((DefaultMutableTreeNode) treeModel.getRoot()).add(frameNode);
+            DefaultMutableTreeNode predicateNode = new DefaultMutableTreeNode(new FramesetArgument("PREDICATE", "", ""));
+            frameNode.add(predicateNode);
+            if (argumentList != null && argumentList.containsPredicateWithId(frameset.getId())){
+                selectedNodes.add(predicateNode);
+                selfSelected = true;
+            }
             argTmp = false;
             argDis = false;
             argLoc = false;
@@ -104,8 +121,9 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
             for (FramesetArgument argument : frameset.getFramesetArguments()){
                 DefaultMutableTreeNode argumentNode = new DefaultMutableTreeNode(argument);
                 frameNode.add(argumentNode);
-                if (word.getArgument() != null && word.getArgument().getId() != null && word.getArgument().getId().equals(frameset.getId()) && word.getArgument().getArgumentType() != null && word.getArgument().getArgumentType().equals(argument.getArgumentType())){
-                    selectedNode = argumentNode;
+                if (argumentList != null && argumentList.containsArgument(argument.getArgumentType(), frameset.getId())){
+                    selectedNodes.add(argumentNode);
+                    selfSelected = true;
                 }
                 if (argument.getArgumentType().equals("ARGMTMP")){
                     argTmp = true;
@@ -134,9 +152,8 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
             }
         }
         treeModel.reload();
-        if (selectedNode != null){
-            selfSelected = true;
-            tree.setSelectionPath(new TreePath(treeModel.getPathToRoot(selectedNode)));
+        for (DefaultMutableTreeNode node : selectedNodes){
+            tree.addSelectionPath(new TreePath(treeModel.getPathToRoot(node)));
         }
         tree.setVisible(true);
         pane.setVisible(true);
@@ -151,7 +168,7 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
         if (selectedWordIndex != -1){
             populateLeaf(sentence, selectedWordIndex);
             pane.getVerticalScrollBar().setValue(0);
-            pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + 20, 240, 90);
+            pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + 20, 240, 300);
             clickedWord = ((AnnotatedWord)sentence.getWord(selectedWordIndex));
             selectedWordIndex = -1;
             selfSelected = false;

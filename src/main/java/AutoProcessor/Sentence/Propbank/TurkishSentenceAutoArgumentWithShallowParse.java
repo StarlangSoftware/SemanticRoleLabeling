@@ -30,11 +30,11 @@ public class TurkishSentenceAutoArgumentWithShallowParse extends SentenceAutoArg
         String predicateId = null;
         for (int i = 0; i < sentence.wordCount(); i++){
             AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
-            if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE")){
+            if (word.getArgumentList() != null && word.getArgumentList().containsPredicate()){
                 if (word.getParse() != null && word.getParse().containsTag(MorphologicalTag.PASSIVE)){
                     onlyArg1 = true;
                 }
-                predicateId = word.getArgument().getId();
+                predicateId = word.getSemantic();
                 break;
             }
         }
@@ -44,17 +44,17 @@ public class TurkishSentenceAutoArgumentWithShallowParse extends SentenceAutoArg
         if (predicateId != null){
             for (int i = 0; i < sentence.wordCount(); i++){
                 AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
-                if (word.getArgument() == null){
+                if (word.getArgumentList() == null){
                     if (word.getShallowParse() != null && word.getShallowParse().equalsIgnoreCase("ÖZNE")){
                         if (word.getParse() != null && onlyArg1){
-                            word.setArgument("ARG1$" + predicateId);
+                            word.setArgumentList("ARG1$" + predicateId);
                         } else {
-                            word.setArgument("ARG0$" + predicateId);
+                            word.setArgumentList("ARG0$" + predicateId);
                         }
                         modified = true;
                     } else {
                         if (word.getShallowParse() != null && word.getShallowParse().equalsIgnoreCase("NESNE")){
-                            word.setArgument("ARG1$" + predicateId);
+                            word.setArgumentList("ARG1$" + predicateId);
                             modified = true;
                         }
                     }

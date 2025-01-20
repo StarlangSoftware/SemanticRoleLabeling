@@ -79,7 +79,7 @@ public class ViewSentencePropBankPredicateAnnotationFrame extends ViewSentenceAn
         data.get(row).set(TAG_INDEX, newValue);
         AnnotatedSentence sentence = (AnnotatedSentence) corpus.getSentence(Integer.parseInt(data.get(row).get(COLOR_COLUMN_INDEX - 1)));
         AnnotatedWord word = (AnnotatedWord) sentence.getWord(Integer.parseInt(data.get(row).get(WORD_POS_INDEX)) - 1);
-        word.setArgument(newValue);
+        word.setArgumentList(newValue);
         sentence.save();
     }
 
@@ -105,8 +105,8 @@ public class ViewSentencePropBankPredicateAnnotationFrame extends ViewSentenceAn
                 row.add(sentence.getFileName());
                 row.add("" + (j + 1));
                 row.add(word.getName());
-                if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE")){
-                    row.add(word.getArgument().toString());
+                if (word.getArgumentList() != null && word.getArgumentList().containsPredicate()){
+                    row.add(word.getArgumentList().toString());
                 } else {
                     if (word.getSemantic() != null && framesetList.frameExists(word.getSemantic())){
                         row.add("NONE");

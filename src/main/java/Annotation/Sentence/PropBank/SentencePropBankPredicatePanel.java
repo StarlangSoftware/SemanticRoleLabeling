@@ -33,6 +33,23 @@ public class SentencePropBankPredicatePanel extends SentencePropBankPanel {
         }
     }
 
+    @Override
+    protected void setWordLayer() {
+        if (list.getSelectedIndex() == 0 && clickedWord.getArgumentList().containsPredicate()){
+            clickedWord.getArgumentList().removePredicate();
+        } else {
+            if (list.getSelectedIndex() == 1){
+                if (clickedWord.getArgumentList() == null){
+                    clickedWord.setArgumentList("PREDICATE$" + ((Argument)list.getSelectedValue()).getId());
+                } else {
+                    if (!clickedWord.getArgumentList().containsPredicate()){
+                        clickedWord.getArgumentList().addPredicate(((Argument)list.getSelectedValue()).getId());
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Fills the JList that contains PREDICATE tag with semantic id and NONE.
      * @param sentence Sentence used to populate for the current word.
@@ -46,13 +63,14 @@ public class SentencePropBankPredicatePanel extends SentencePropBankPanel {
         if (word.getSemantic() != null && framesetList.frameExists(word.getSemantic())){
             listModel.addElement(new Argument("PREDICATE", word.getSemantic()));
         }
-        if (word.getArgument() != null && word.getArgument().getArgumentType().equals("NONE")){
-            return 0;
-        }
-        if (word.getArgument() != null && word.getArgument().getArgumentType().equals("PREDICATE") && word.getArgument().getId().equals(word.getSemantic())){
-            return 1;
+        if (word.getArgumentList() != null){
+            if (word.getArgumentList().containsPredicateWithId(word.getSemantic())){
+                return 1;
+            }
+            if (word.getArgumentList().getArguments().contains("NONE")){
+                return 0;
+            }
         }
         return -1;
     }
-
 }
