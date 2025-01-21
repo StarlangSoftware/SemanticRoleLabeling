@@ -51,19 +51,7 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
                     for (int i = 0; i < sentence.wordCount(); i++) {
                         AnnotatedWord word = (AnnotatedWord) sentence.getWord(i);
                         if (word.isSelected()){
-                            String argumentList = "";
-                            for (int j = 0; j < list.length; j++) {
-                                DefaultMutableTreeNode node = (DefaultMutableTreeNode) list[j].getLastPathComponent();
-                                if (node.getLevel() == 2){
-                                    String synSet = (String) ((DefaultMutableTreeNode)node.getParent()).getUserObject();
-                                    FramesetArgument argument = (FramesetArgument) node.getUserObject();
-                                    if (argumentList.isEmpty()){
-                                        argumentList = argument.getArgumentType() + "$" + synSet;
-                                    } else {
-                                        argumentList += "#" + argument.getArgumentType() + "$" + synSet;
-                                    }
-                                }
-                            }
+                            String argumentList = getArgumentList(list);
                             word.setArgumentList(argumentList);
                         }
                     }
@@ -79,6 +67,28 @@ public class SentencePropBankArgumentPanel extends SentencePropBankPanel {
         pane.setFocusTraversalKeysEnabled(false);
         pane.setVisible(false);
         setFocusable(false);
+    }
+
+    /**
+     * Constructs an argument list string from the selected arguments for a word.
+     * @param list Selected tree paths representing different argument structures for a word.
+     * @return String form of the argument list of a word.
+     */
+    private String getArgumentList(TreePath[] list) {
+        String argumentList = "";
+        for (TreePath treePath : list) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
+            if (node.getLevel() == 2) {
+                String synSet = (String) ((DefaultMutableTreeNode) node.getParent()).getUserObject();
+                FramesetArgument argument = (FramesetArgument) node.getUserObject();
+                if (argumentList.isEmpty()) {
+                    argumentList = argument.getArgumentType() + "$" + synSet;
+                } else {
+                    argumentList += "#" + argument.getArgumentType() + "$" + synSet;
+                }
+            }
+        }
+        return argumentList;
     }
 
     /**

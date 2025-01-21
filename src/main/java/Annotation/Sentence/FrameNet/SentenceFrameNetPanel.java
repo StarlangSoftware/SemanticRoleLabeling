@@ -18,7 +18,6 @@ public class SentenceFrameNetPanel extends SentenceAnnotatorPanel {
      */
     @Override
     protected void setWordLayer() {
-        clickedWord.setFrameElement(list.getSelectedValue().toString());
     }
 
     /**
@@ -26,7 +25,7 @@ public class SentenceFrameNetPanel extends SentenceAnnotatorPanel {
      */
     @Override
     protected void setBounds() {
-        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getHeight(), 120, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
+        pane.setBounds(((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getX(), ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getY() + ((AnnotatedWord)sentence.getWord(selectedWordIndex)).getArea().getHeight(), 240, (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.4));
     }
 
     /**
@@ -34,7 +33,7 @@ public class SentenceFrameNetPanel extends SentenceAnnotatorPanel {
      */
     @Override
     protected void setLineSpace() {
-        lineSpace = 80;
+        lineSpace = 100;
     }
 
     /**
@@ -50,12 +49,12 @@ public class SentenceFrameNetPanel extends SentenceAnnotatorPanel {
      */
     @Override
     protected void drawLayer(AnnotatedWord word, Graphics g, int currentLeft, int lineIndex, int wordIndex, int maxSize, ArrayList<Integer> wordSize, ArrayList<Integer> wordTotal) {
-        if (word.getFrameElement() != null){
-            String correct = word.getFrameElement().getFrameElementType();
-            g.drawString(correct, currentLeft, (lineIndex + 1) * lineSpace + 30);
-            String id = word.getFrameElement().getId();
-            if (id != null){
-                g.drawString(id, currentLeft, (lineIndex + 1) * lineSpace + 50);
+        if (word.getFrameElementList() != null){
+            ArrayList<String> frameElements = word.getFrameElementList().getFrameElements();
+            int i = 0;
+            for (String frameElement : frameElements) {
+                g.drawString(frameElement, currentLeft, (lineIndex + 1) * lineSpace + 25 * (i + 1));
+                i++;
             }
         }
     }
@@ -69,10 +68,13 @@ public class SentenceFrameNetPanel extends SentenceAnnotatorPanel {
     @Override
     protected int getMaxLayerLength(AnnotatedWord word, Graphics g) {
         int maxSize = g.getFontMetrics().stringWidth(word.getName());
-        if (word.getFrameElement() != null){
-            int size = g.getFontMetrics().stringWidth(word.getFrameElement().getFrameElementType());
-            if (size > maxSize){
-                maxSize = size;
+        if (word.getFrameElementList() != null){
+            ArrayList<String> frameElements = word.getFrameElementList().getFrameElements();
+            for (String frameElement : frameElements) {
+                int size = g.getFontMetrics().stringWidth(frameElement);
+                if (size > maxSize){
+                    maxSize = size;
+                }
             }
         }
         return maxSize;

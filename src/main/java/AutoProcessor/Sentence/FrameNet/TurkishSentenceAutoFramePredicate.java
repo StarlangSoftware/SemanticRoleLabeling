@@ -26,7 +26,7 @@ public class TurkishSentenceAutoFramePredicate extends SentenceAutoFramePredicat
     public boolean autoPredicate(AnnotatedSentence sentence) {
         ArrayList<AnnotatedWord> candidateList = sentence.predicateFrameCandidates(frameNet);
         for (AnnotatedWord word : candidateList){
-            word.setFrameElement("PREDICATE$NONE$" + word.getSemantic());
+            word.setFrameElementList("PREDICATE$NONE$" + word.getSemantic());
         }
         return !candidateList.isEmpty();
     }

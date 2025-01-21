@@ -6,6 +6,7 @@ import AnnotatedSentence.ViewLayerType;
 import AutoProcessor.Sentence.FrameNet.TurkishSentenceAutoFramePredicate;
 import FrameNet.FrameElement;
 import FrameNet.FrameNet;
+import PropBank.Argument;
 
 import java.awt.*;
 
@@ -34,6 +35,23 @@ public class SentenceFrameNetPredicatePanel extends SentenceFrameNetPanel {
         }
     }
 
+    @Override
+    protected void setWordLayer() {
+        if (list.getSelectedIndex() == 0 && clickedWord.getFrameElementList().containsPredicate()){
+            clickedWord.getFrameElementList().removePredicate();
+        } else {
+            if (list.getSelectedIndex() == 1){
+                if (clickedWord.getFrameElementList() == null){
+                    clickedWord.setFrameElementList("PREDICATE$NONE$" + ((Argument)list.getSelectedValue()).getId());
+                } else {
+                    if (!clickedWord.getFrameElementList().containsPredicate()){
+                        clickedWord.getFrameElementList().addPredicate(((Argument)list.getSelectedValue()).getId());
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Fills the JList that contains NONE and PREDICATE tag with the words semantic id.
      * @param sentence Sentence used to populate for the current word.
@@ -47,11 +65,13 @@ public class SentenceFrameNetPredicatePanel extends SentenceFrameNetPanel {
         if (word.getSemantic() != null){
             listModel.addElement(new FrameElement("PREDICATE", "NONE", word.getSemantic()));
         }
-        if (word.getFrameElement() != null && word.getFrameElement().getFrameElementType().equals("NONE")){
-            return 0;
-        }
-        if (word.getFrameElement() != null && word.getFrameElement().getFrameElementType().equals("PREDICATE") && word.getFrameElement().getId().equals(word.getSemantic())){
-            return 1;
+        if (word.getFrameElementList() != null){
+            if (word.getFrameElementList().containsPredicateWithId(word.getSemantic())){
+                return 1;
+            }
+            if (word.getFrameElementList().getFrameElements().contains("NONE")){
+                return 0;
+            }
         }
         return -1;
     }
