@@ -43,7 +43,7 @@ public class SentencePropBankPredicateFrame extends SentenceAnnotatorFrame {
     }
 
     @Override
-    protected SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
+    public SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
         return new SentencePropBankPredicatePanel(currentPath, rawFileName, xmlParser);
     }
 

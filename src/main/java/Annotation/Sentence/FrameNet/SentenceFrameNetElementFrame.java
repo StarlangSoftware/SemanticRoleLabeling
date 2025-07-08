@@ -20,7 +20,7 @@ public class SentenceFrameNetElementFrame extends SentenceAnnotatorFrame {
     }
 
     @Override
-    protected SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
+    public SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
         return new SentenceFrameNetElementPanel(currentPath, rawFileName, frameNet);
     }
 

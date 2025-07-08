@@ -23,7 +23,7 @@ public class SentencePropBankArgumentFrame extends SentenceAnnotatorFrame {
     }
 
     @Override
-    protected SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
+    public SentenceAnnotatorPanel generatePanel(String currentPath, String rawFileName) {
         return new SentencePropBankArgumentPanel(currentPath, rawFileName, xmlParser);
     }
 
