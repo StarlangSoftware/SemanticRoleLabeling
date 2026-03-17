@@ -72,10 +72,6 @@ After annotating sentences, you can use [DataGenerator](https://github.com/starl
 
 After generating the classification dataset as above, one can use the [Classification](https://github.com/starlangsoftware/Classification) package to generate machine learning models for the Semantic Role Labeling task.
 
-Class Diagram
-============
-
-<img src="classDiagram.png">
 
 For Developers
 ============
@@ -194,6 +190,10 @@ Afterwards, one has to annotate the arguments for each predicate. We use autoArg
 
 For Contibutors
 ============
+
+### Class Diagram
+
+<img src="classDiagram.png">
 
 ### pom.xml file
 1. Standard setup for packaging is similar to:
